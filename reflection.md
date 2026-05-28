@@ -11,7 +11,7 @@
 - มี Player POV Monte Carlo เพื่อดูโอกาสจากมุมผู้เล่น เช่น chance ได้ SSR อย่างน้อย 1, chance ได้ 0 SSR, average SSR
 - มี Free Roll Rule ที่นับจาก paid rolls เท่านั้น และ free rolls ไม่สร้าง free rolls ซ้ำ
 - มี Pity System, History, Chart/Visual และ CSV Export
-- UI เป็นธีม fantasy adventure 8-bit พร้อมสกุลเงิน Leaf, ภาพพื้นหลังป่าแฟนตาซี, และตัวละคร original ไม่ใช้ตัวละครจากเกมอื่น
+- UI เป็นธีม fantasy adventure 8-bit พร้อมสกุลเงิน Leaf, ภาพพื้นหลังป่าแฟนตาซี, ใบไม้ pixel reveal animation, และตัวละคร original ไม่ใช้ตัวละครจากเกมอื่น
 
 ## ติดปัญหาตรงไหน
 
@@ -32,3 +32,8 @@
 ## สิ่งที่เรียนรู้
 
 การใช้ AI ให้ดีไม่ใช่แค่ให้เขียนโค้ด แต่ต้องใช้ช่วยแยก requirement, ตรวจ edge case, อธิบาย logic และทำ validation ให้ตรวจสอบได้ งานนี้จึงเน้นทั้งความถูกต้องของ simulation และการสื่อสารผลลัพธ์ให้คนทั่วไปเข้าใจ
+ 
+## Latest UI improvement
+
+- Added a pop-up Pixel Leaf Reveal overlay so the gacha moment feels separate from the dashboard without needing another page.
+- `Run Player POV` now opens a 10-leaf reveal sample after running Monte Carlo, while the full probability results remain visible on the main page.

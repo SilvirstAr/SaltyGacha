@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="th">
 <head>
   <meta charset="utf-8">
@@ -54,6 +54,10 @@
       background-position: center top, center top, center top, center top;
       background-attachment: fixed, fixed, fixed, fixed;
       min-height: 100vh;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     body::before {
@@ -279,6 +283,16 @@
     .btn:hover {
       transform: translateY(-1px);
       filter: brightness(1.04);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      filter: grayscale(0.2) opacity(0.65);
+      transform: none;
     }
 
     .btn:active {
@@ -582,6 +596,251 @@
       align-items: center;
     }
 
+    .leaf-reveal {
+      margin-top: 16px;
+      border: 2px solid rgba(93, 58, 34, 0.16);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(233, 244, 184, 0.56), rgba(255, 248, 218, 0.82));
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .leaf-reveal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .leaf-reveal-head h3 {
+      margin: 0;
+    }
+
+    .leaf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+      gap: 10px;
+    }
+
+    .leaf-card {
+      appearance: none;
+      border: 2px solid rgba(93, 58, 34, 0.18);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 253, 240, 0.96), rgba(233, 244, 184, 0.8));
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      min-height: 132px;
+      padding: 12px 8px;
+      place-items: center;
+      position: relative;
+      text-align: center;
+      box-shadow: inset 0 -5px 0 rgba(47, 91, 53, 0.12);
+      transform-origin: center bottom;
+      animation: leafDrop 460ms ease backwards;
+      animation-delay: var(--delay, 0ms);
+    }
+
+    .leaf-card:hover {
+      transform: translateY(-2px) rotate(-1deg);
+      border-color: rgba(47, 91, 53, 0.38);
+    }
+
+    .leaf-card:disabled {
+      color: var(--ink);
+      cursor: default;
+    }
+
+    .leaf-card.is-open {
+      border-color: var(--reveal, var(--leaf));
+      background:
+        radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--reveal, var(--leaf)) 32%, transparent), transparent 44%),
+        #fffdf0;
+      box-shadow: inset 0 -5px 0 rgba(93, 58, 34, 0.12), 0 10px 22px rgba(36, 49, 31, 0.12);
+      animation: leafPop 220ms ease both;
+    }
+
+    .leaf-card.rarity-SSR { --reveal: var(--ssr); }
+    .leaf-card.rarity-SR { --reveal: var(--sr); }
+    .leaf-card.rarity-R { --reveal: var(--r); }
+    .leaf-card.rarity-N { --reveal: var(--n); }
+
+    .leaf-pack {
+      width: 38px;
+      height: 38px;
+      position: relative;
+      image-rendering: pixelated;
+      transform: rotate(-24deg);
+      animation: leafPulse 900ms ease-in-out infinite alternate;
+    }
+
+    .leaf-pack::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--fern);
+      box-shadow:
+        8px 0 var(--fern),
+        0 8px var(--leaf),
+        8px 8px var(--mint),
+        16px 8px var(--leaf),
+        8px 16px var(--forest),
+        16px 16px var(--fern),
+        24px 16px var(--leaf),
+        16px 24px var(--soil);
+    }
+
+    .leaf-card strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .leaf-card small {
+      color: rgba(36, 49, 31, 0.68);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .leaf-card .sprite {
+      margin: 0 0 6px;
+      transform: scale(0.86);
+    }
+
+    @keyframes leafDrop {
+      from {
+        opacity: 0;
+        transform: translateY(-18px) rotate(-8deg) scale(0.88);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(0) scale(1);
+      }
+    }
+
+    @keyframes leafPulse {
+      from { transform: rotate(-24deg) translateY(0); }
+      to { transform: rotate(-18deg) translateY(-4px); }
+    }
+
+    @keyframes leafPop {
+      0% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+
+    .reveal-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .reveal-modal[hidden] {
+      display: none !important;
+    }
+
+    .reveal-backdrop {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(233, 244, 184, 0.28), transparent 24rem),
+        rgba(20, 44, 24, 0.76);
+      backdrop-filter: blur(7px);
+    }
+
+    .reveal-dialog {
+      width: min(920px, 100%);
+      max-height: min(760px, calc(100vh - 38px));
+      overflow: auto;
+      position: relative;
+      border: 4px solid var(--soil);
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255, 248, 218, 0.96), rgba(233, 244, 184, 0.92)),
+        var(--scene-bg);
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 30px 80px rgba(12, 30, 18, 0.42);
+      padding: 18px;
+    }
+
+    .reveal-dialog::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 24px;
+      background: rgba(255, 253, 240, 0.7);
+    }
+
+    .reveal-modal-head,
+    .reveal-modal-copy,
+    .modal-leaf-reveal {
+      position: relative;
+      z-index: 1;
+    }
+
+    .reveal-modal-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .reveal-modal-head h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.05;
+    }
+
+    .reveal-modal-head .eyebrow {
+      color: var(--forest);
+      margin-bottom: 4px;
+    }
+
+    .reveal-modal-copy {
+      margin: 0 0 14px;
+      color: var(--soil);
+      font-weight: 800;
+    }
+
+    .icon-btn {
+      appearance: none;
+      width: 42px;
+      height: 42px;
+      border: 2px solid rgba(93, 58, 34, 0.22);
+      border-radius: 50%;
+      background: var(--mint);
+      color: var(--forest);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font: inherit;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.12);
+    }
+
+    .modal-leaf-reveal {
+      margin-top: 0;
+      background: rgba(255, 253, 240, 0.74);
+    }
+
+    .modal-leaf-reveal .leaf-grid {
+      grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+    }
+
     .insight {
       margin-top: 12px;
       border-radius: 18px;
@@ -635,6 +894,16 @@
       }
       .bar-line b {
         grid-column: 2;
+      }
+      .reveal-modal {
+        padding: 10px;
+      }
+      .reveal-dialog {
+        border-radius: 22px;
+        padding: 14px;
+      }
+      .modal-leaf-reveal .leaf-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   </style>
@@ -720,7 +989,7 @@
 
       <section class="panel">
         <h2><span class="icon-badge">✧</span>Bonus Rules</h2>
-        <label class="inline-check"><input type="checkbox" id="freeRollEnabled" checked>Enable Free Roll Rule</label>
+        <label class="inline-check"><input type="checkbox" id="freeRollEnabled">Enable Free Roll Rule</label>
         <div class="form-grid">
           <label class="field">Paid rolls required
             <input type="number" id="freeEvery" min="1" value="10">
@@ -810,6 +1079,29 @@
   </p>
 </main>
 
+<div class="reveal-modal" id="revealModal" role="dialog" aria-modal="true" aria-labelledby="revealModalTitle" hidden>
+  <button class="reveal-backdrop" type="button" id="revealBackdrop" aria-label="Close reveal"></button>
+  <section class="reveal-dialog">
+    <div class="reveal-modal-head">
+      <div>
+        <p class="eyebrow">Pixel leaf reveal</p>
+        <h2 id="revealModalTitle">Player POV Reveal</h2>
+      </div>
+      <button class="icon-btn" id="closeRevealBtn" type="button" aria-label="Close reveal">×</button>
+    </div>
+    <p class="reveal-modal-copy" id="revealModalCopy">จิ้มใบไม้ทีละใบเพื่อเปิดผล หรือกด Open All เพื่อเปิดทั้งหมด</p>
+    <div class="leaf-reveal modal-leaf-reveal" aria-live="polite">
+      <div class="leaf-reveal-head">
+        <h3>Pixel Leaf Reveal</h3>
+        <button class="btn soft" id="revealAllBtn" type="button" disabled>Open All</button>
+      </div>
+      <div class="leaf-grid" id="revealLeaves">
+        <div class="empty">กด Run Player POV เพื่อปล่อยใบไม้กาชา</div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
   const RARITIES = ["SSR", "SR", "R", "N"];
   const rarityClass = { SSR: "ssr", SR: "sr", R: "r", N: "n" };
@@ -832,8 +1124,10 @@
   let nextItemId = 13;
   let editingItemId = null;
   let latestPulls = [];
+  let latestRevealPulls = [];
   let latestPovSummary = null;
   let history = [];
+  let openedLeafCount = 0;
 
   const $ = (id) => document.getElementById(id);
   const fmt = (n, digits = 2) => Number(n).toLocaleString("th-TH", { maximumFractionDigits: digits });
@@ -980,9 +1274,9 @@
     return { rarityCounts, itemCounts, mostCommonRarity };
   }
 
-  function simulateSingle() {
+  function simulateSingle({ openReveal = true, revealTitle = "Single Simulation Reveal", revealCopy = "" } = {}) {
     const validation = validateCore({ includeSingle: true });
-    if (!validation.ok) return;
+    if (!validation.ok) return false;
     const paidRolls = Math.floor(Number($("rollCount").value));
     const price = Number($("pricePerRoll").value);
     const leaf = Number($("leafPerRoll").value);
@@ -993,12 +1287,20 @@
       leafCost: row.costType === "Paid" ? leaf : 0
     }));
     renderSingleResults(sequence, price, leaf, validation.rates);
+    renderLeafReveal(latestPulls);
+    if (openReveal) {
+      showRevealOverlay(
+        revealTitle,
+        revealCopy || `เปิดใบไม้ ${latestPulls.length} ใบจากการสุ่มรอบนี้ จิ้มทีละใบหรือกด Open All ได้เลย`
+      );
+    }
     addHistory({
       mode: "Single",
       rolls: `${sequence.paidRolls} paid + ${sequence.freeRolls} free`,
       result: `${latestPulls.filter((row) => row.rarity === "SSR").length} SSR`,
       cost: `${fmt(sequence.paidRolls * price, 0)} บาท / ${fmt(sequence.paidRolls * leaf, 0)} Leaf`
     });
+    return true;
   }
 
   function renderSingleResults(sequence, price, leaf, rates) {
@@ -1031,9 +1333,67 @@
     }).join("");
   }
 
-  function runPov() {
+  function closedLeafTemplate(row, index) {
+    return `
+      <button class="leaf-card rarity-${row.rarity}" type="button" data-index="${index}" style="--delay:${Math.min(index, 18) * 48}ms" aria-label="Open leaf ${index + 1}">
+        <span class="leaf-pack" aria-hidden="true"></span>
+        <strong>Leaf ${String(index + 1).padStart(2, "0")}</strong>
+        <small>${row.costType}${row.pityTriggered ? " • Pity" : ""}</small>
+      </button>
+    `;
+  }
+
+  function openedLeafTemplate(row) {
+    return `
+      <div class="sprite ${rarityClass[row.rarity]}" aria-hidden="true"></div>
+      <strong>${escapeHtml(row.itemName)}</strong>
+      <span class="rarity ${row.rarity}">${row.rarity}</span>
+      <small>${row.costType}${row.pityTriggered ? " • Pity" : ""}</small>
+    `;
+  }
+
+  function renderLeafReveal(results) {
+    latestRevealPulls = results;
+    openedLeafCount = 0;
+    $("revealAllBtn").disabled = !results.length;
+    $("revealLeaves").innerHTML = results.length
+      ? results.map((row, index) => closedLeafTemplate(row, index)).join("")
+      : `<div class="empty">กด Run Player POV เพื่อปล่อยใบไม้กาชา</div>`;
+  }
+
+  function showRevealOverlay(title, copy) {
+    $("revealModalTitle").textContent = title;
+    $("revealModalCopy").textContent = copy;
+    $("revealModal").hidden = false;
+    document.body.classList.add("modal-open");
+    $("revealAllBtn").focus();
+  }
+
+  function closeRevealOverlay() {
+    $("revealModal").hidden = true;
+    document.body.classList.remove("modal-open");
+  }
+
+  function openLeaf(index) {
+    const row = latestRevealPulls[index];
+    const leaf = document.querySelector(`.leaf-card[data-index="${index}"]`);
+    if (!row || !leaf || leaf.classList.contains("is-open")) return;
+    leaf.classList.add("is-open");
+    leaf.disabled = true;
+    leaf.innerHTML = openedLeafTemplate(row);
+    openedLeafCount += 1;
+    if (openedLeafCount >= latestRevealPulls.length) {
+      $("revealAllBtn").disabled = true;
+    }
+  }
+
+  function openAllLeaves() {
+    latestRevealPulls.forEach((_, index) => openLeaf(index));
+  }
+
+  function runPov({ openReveal = true } = {}) {
     const validation = validateCore({ includePov: true });
-    if (!validation.ok) return;
+    if (!validation.ok) return false;
     const budget = Number($("budgetInput").value);
     const price = Number($("pricePerRoll").value);
     const leaf = Number($("leafPerRoll").value);
@@ -1084,12 +1444,27 @@
       totalLeafCost: paidRolls * leaf
     };
     renderPovSummary();
+    if (openReveal) {
+      const previewPaidRolls = Math.max(1, Math.min(10, paidRolls || 10));
+      const preview = runRollSequence(previewPaidRolls, validation.rates);
+      const previewPulls = preview.results.map((row) => ({
+        ...row,
+        thbCost: row.costType === "Paid" ? price : 0,
+        leafCost: row.costType === "Paid" ? leaf : 0
+      }));
+      renderLeafReveal(previewPulls);
+      showRevealOverlay(
+        "Player POV Reveal",
+        `ตัวอย่างใบไม้ ${previewPulls.length} ใบจากมุมผู้เล่นหนึ่งรอบ ส่วนตัวเลข Monte Carlo ${fmt(runs, 0)} รอบอยู่ด้านหลังในหน้า Player POV`
+      );
+    }
     addHistory({
       mode: "Player POV",
       rolls: `${runs} sims x ${totalRolls} rolls`,
       result: `${pct(latestPovSummary.chanceAtLeastOneSSR)} >=1 SSR`,
       cost: `${fmt(budget, 0)} บาท / ${fmt(latestPovSummary.totalLeafCost, 0)} Leaf`
     });
+    return true;
   }
 
   function renderPovSummary() {
@@ -1269,7 +1644,7 @@
     $("leafPerRoll").value = 160;
     $("budgetInput").value = 3000;
     $("simulationRuns").value = 1000;
-    $("freeRollEnabled").checked = true;
+    $("freeRollEnabled").checked = false;
     $("freeEvery").value = 10;
     $("freeGrant").value = 1;
     $("pityEnabled").checked = true;
@@ -1277,6 +1652,7 @@
     items = JSON.parse(JSON.stringify(defaultItems));
     nextItemId = 13;
     latestPulls = [];
+    latestRevealPulls = [];
     latestPovSummary = null;
     history = [];
     cancelEdit();
@@ -1286,6 +1662,8 @@
     $("resultTableBody").innerHTML = "";
     $("rarityChart").innerHTML = "";
     $("itemResults").innerHTML = `<div class="empty">กด Start Simulation เพื่อดูผล item</div>`;
+    renderLeafReveal([]);
+    closeRevealOverlay();
     $("povSummaryCards").innerHTML = "";
     $("povChart").innerHTML = "";
     $("povInsight").textContent = "ตั้งค่างบและกด Run Monte Carlo เพื่อดูโอกาสจากมุมผู้เล่น";
@@ -1308,13 +1686,29 @@
   });
   $("addItemBtn").addEventListener("click", addOrSaveItem);
   $("cancelEditBtn").addEventListener("click", cancelEdit);
-  $("simulateBtn").addEventListener("click", simulateSingle);
+  $("simulateBtn").addEventListener("click", () => simulateSingle({
+    revealTitle: "Single Simulation Reveal"
+  }));
   $("quickRollBtn").addEventListener("click", () => {
     $("rollCount").value = 10;
-    simulateSingle();
+    simulateSingle({
+      revealTitle: "Quick 10 Leaf Reveal",
+      revealCopy: "กดเปิดใบไม้ pixel 10 ใบเพื่อดูผลสุ่มทีละตัว หรือเปิดทั้งหมดในทีเดียว"
+    });
   });
-  $("runPovBtn").addEventListener("click", runPov);
-  $("quickPovBtn").addEventListener("click", runPov);
+  $("revealLeaves").addEventListener("click", (event) => {
+    const leaf = event.target.closest(".leaf-card");
+    if (!leaf) return;
+    openLeaf(Number(leaf.dataset.index));
+  });
+  $("revealAllBtn").addEventListener("click", openAllLeaves);
+  $("closeRevealBtn").addEventListener("click", closeRevealOverlay);
+  $("revealBackdrop").addEventListener("click", closeRevealOverlay);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !$("revealModal").hidden) closeRevealOverlay();
+  });
+  $("runPovBtn").addEventListener("click", () => runPov());
+  $("quickPovBtn").addEventListener("click", () => runPov());
   $("exportPullCsvBtn").addEventListener("click", exportLatestPullCsv);
   $("exportPovCsvBtn").addEventListener("click", exportPovCsv);
   $("clearHistoryBtn").addEventListener("click", () => {

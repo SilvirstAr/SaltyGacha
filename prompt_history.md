@@ -163,3 +163,36 @@ Output used:
 
 - Embedded the provided image as a data URI so the HTML remains self-contained.
 - Added soft cream/green overlays, translucent panels, and updated hero copy.
+
+## 11. Pixel Leaf Reveal Animation
+
+Prompt:
+
+> Add a gacha reveal animation where Quick 10 Roll creates pixel leaves. The player can click each leaf to reveal the character one by one, or press Open All to reveal every result.
+
+Purpose:
+
+- Make the simulation feel more like a playful 8-bit gacha pull while keeping the same result data for summaries and CSV export.
+
+Output used:
+
+- Added `Pixel Leaf Reveal` cards after Single Simulation.
+- Added click-to-open and `Open All` behavior.
+- Reused the same `latestPulls` result list, so the reveal UI, result table, item summary, history, and CSV all stay consistent.
+
+## 12. Player POV Reveal Overlay
+
+Prompt:
+
+> Move the gacha reveal into a pop-up overlay instead of keeping it as a normal section. Make it part of the Run Player POV experience, so the player sees pixel leaves, can reveal them one by one, or open all results.
+
+Purpose:
+
+- Make the reveal feel like a gacha moment while keeping the dashboard on the same page.
+
+Output used:
+
+- Added a modal overlay for Pixel Leaf Reveal.
+- `Run Player POV` now runs Monte Carlo and opens a 10-leaf player-facing reveal sample.
+- `Quick 10 Roll` and `Start Simulation` also use the same overlay reveal.
+- The Player POV summary, probability bars, history, and CSV remain available on the main page.
